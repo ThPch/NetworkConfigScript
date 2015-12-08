@@ -63,9 +63,6 @@ aside
 <td><SPAN class="intro"><center>Changement d'adresse IP</center></SPAN> </td>
 </tr>
 <table border="2" width="315">
-<tr>
-<td class="red">/!\ IMPORTANT : Cet outil est à l'usage uniquement des administrateurs Ou utilisateurs membre du groupe "Opérateurs de Configuration Réseau"</td>
-</tr>
 </table>
 </table>
 <table border="2">
@@ -81,14 +78,14 @@ aside
 <input maxlength="3" type='text'  class="IP" onKeyUp="IPCheckAdrIpStation03()" name="AdrIpStation03" size="3">
 <input maxlength="3" type='text'  class="IP" onKeyUp="IPCheckAdrIpStation04()" name="AdrIpStation04" size="3"></td><tr>
  
-<td>Masque:</td>
+<td>Mask:</td>
 <td class="blue">
 <input maxlength="3" type='text'  class="IP"  onKeyUp="IpCheckAdrSmStation01()" name="AdrSmStation01" size="3" value="255">
 <input maxlength="3" type='text'  class="IP"  onKeyUp="IpCheckAdrSmStation02()" name="AdrSmStation02" size="3" value="255">
 <input maxlength="3" type='text'  class="IP"  onKeyUp="IpCheckAdrSmStation03()" name="AdrSmStation03" size="3" value="255">
 <input maxlength="3" type='text'  class="IP"  onKeyUp="IpCheckAdrSmStation04()" name="AdrSmStation04" size="3" value="0"></td><tr>
  
-<td>Passerelle:</td>
+<td>Gateway:</td>
 <td class="blue"> 
 <input maxlength="3" type='text'  class="IP"  onKeyUp="IpCheckAdrRouStation01()" name="AdrRouStation01" size="3">
 <input maxlength="3" type='text'  class="IP"  onKeyUp="IpCheckAdrRouStation02()" name="AdrRouStation02" size="3">
@@ -114,9 +111,9 @@ aside
 <aside>
 		<table border="0" cellpadding="0" cellspacing="30">
 		
-		<INPUT TYPE="button" NAME="ajouter" class="bouton" style="width:90px" VALUE="Ajouter" onclick="AjouterIP()">&nbsp;&nbsp;
-		<INPUT TYPE="button" NAME="supprimer" class="bouton" style="width:90px" VALUE="Supprimer" onclick="Supprimer(PathFichParam)">&nbsp;&nbsp;
-		<INPUT TYPE="button" NAME="selectionner" class="bouton" style="width:90px" VALUE="Modifier" onclick="ModifConfig(PathFichParam)">&nbsp;&nbsp;
+		<INPUT TYPE="button" NAME="ajouter" class="bouton" style="width:90px" VALUE="Add" onclick="AddIP()">&nbsp;&nbsp;
+		<INPUT TYPE="button" NAME="supprimer" class="bouton" style="width:90px" VALUE="Delete" onclick="Delete(PathFichParam)">&nbsp;&nbsp;
+		<INPUT TYPE="button" NAME="selectionner" class="bouton" style="width:90px" VALUE="Update" onclick="ModifConfig(PathFichParam)">&nbsp;&nbsp;
 		<select name="listeIP" size="5" onclick="Refresh(PathFichParam)"></select>
 		</table>
 		
@@ -125,8 +122,8 @@ aside
 </table>
 
 <center>
-		<INPUT TYPE="button" NAME="appliquer" class="bouton" VALUE="Appliquer" onclick="Valider()">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-		<INPUT TYPE="button" NAME="annuler" class="bouton" VALUE="Restaurer DHCP" onclick="Annuler()">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<INPUT TYPE="button" NAME="appliquer" class="bouton" VALUE="Apply" onclick="Valider()">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<INPUT TYPE="button" NAME="annuler" class="bouton" VALUE="Restore DHCP" onclick="Annuler()">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 		<INPUT TYPE="button" NAME="aide" class="bouton" VALUE="Aide" onclick="Aide()">
 </center>
 
@@ -193,7 +190,7 @@ Sub CenterWindow(x,y)
 	window.moveTo ileft, itop
 End Sub
 
-Function Supprimer(PathFichParam)
+Function Delete(PathFichParam)
 	'Cette fonction permet de supprimer une configuration réseau (Elle supprime ainsi le fichier .ini correspondant)
 	Dim fichierEffacer, tamp
 	Const ForReading = 1, ForWriting = 2, ForAppending = 8
@@ -221,7 +218,7 @@ End Function
 
 Function ModifConfig(PathFichParam)
 	'Cette fonction permet de modifier une configuration réseau (Elle supprime ainsi le fichier .ini correspondant)
-	Dim fichierModifier, tamp
+	Dim fichierUpdate, tamp
 	Const ForReading = 1, ForWriting = 2, ForAppending = 8
 	tamp = msgbox("Etes vous sûr de vouloir modifier ces paramètres ?", vbExclamation+vbOKCancel, "Suppression d'une configuration")
 	If (tamp=1) Then
@@ -230,9 +227,9 @@ Function ModifConfig(PathFichParam)
 			Set prefIP=fso.OpenTextFile(PathFichParam&"\"& oF2.Name,ForReading) 'Ouvre tout les fichiers .ini contenu dans le repertoir param
 			firstLine = prefIP.ReadLine
 						If (ValidForm.listeIP.Value = Mid(firstLine, Instr(firstLine, "=")+1)) Then		'Si l'intitulé du fichier correspond à l'intitulé selectionné dans la liste
-								fichierModifier = PathFichParam&"\"& oF2.Name							'On le supprime grâce à DeleteFile
+								fichierUpdate = PathFichParam&"\"& oF2.Name							'On le supprime grâce à DeleteFile
 			prefIP.close
-								fso.DeleteFile fichierModifier, True
+								fso.DeleteFile fichierUpdate, True
 						End If
 			Next
 				'Création du fichier correspondant à l'intitulé
@@ -242,8 +239,8 @@ Function ModifConfig(PathFichParam)
 				set fichierConf=fso.OpenTextFile(PathFichParam&"\"&ValidForm.Intitule.value&".ini", ForAppending)
 				fichierConf.WriteLine ("Intitule=") & ValidForm.Intitule.value
 				fichierConf.WriteLine ("IP=") & ValidForm.AdrIpStation01.value & "." & ValidForm.AdrIpStation02.value & "." & ValidForm.AdrIpStation03.value & "." & ValidForm.AdrIpStation04.value
-				fichierConf.WriteLine ("Masque=") & ValidForm.AdrSmStation01.value & "." & ValidForm.AdrSmStation02.value & "." & ValidForm.AdrSmStation03.value & "." & ValidForm.AdrSmStation04.value
-				fichierConf.WriteLine ("Passerelle=") & ValidForm.AdrRouStation01.value & "." & ValidForm.AdrRouStation02.value & "." & ValidForm.AdrRouStation03.value & "." & ValidForm.AdrRouStation04.value
+				fichierConf.WriteLine ("Mask=") & ValidForm.AdrSmStation01.value & "." & ValidForm.AdrSmStation02.value & "." & ValidForm.AdrSmStation03.value & "." & ValidForm.AdrSmStation04.value
+				fichierConf.WriteLine ("Gateway=") & ValidForm.AdrRouStation01.value & "." & ValidForm.AdrRouStation02.value & "." & ValidForm.AdrRouStation03.value & "." & ValidForm.AdrRouStation04.value
 				fichierConf.WriteLine ("DNS1=") & ValidForm.AdrIpDNS101.value & "." & ValidForm.AdrIpDNS102.value & "." & ValidForm.AdrIpDNS103.value & "." & ValidForm.AdrIpDNS104.value
 				fichierConf.WriteLine ("DNS2=") & ValidForm.AdrIpDNS201.value & "." & ValidForm.AdrIpDNS202.value & "." & ValidForm.AdrIpDNS203.value & "." & ValidForm.AdrIpDNS204.value
 				fichierConf.close
@@ -257,7 +254,7 @@ Function ModifConfig(PathFichParam)
 End Function
 
 
-Sub AjouterIP()
+Sub AddIP()
 	'Cette fonction permet d'ajouter une configuration réseau, elle créé un fichier possedant tout les paramètres qu'a saisie l'utilisateur
 	Const ForReading = 1, ForWriting = 2, ForAppending = 8
 	Sleep "1"
@@ -282,8 +279,8 @@ Sub AjouterIP()
 				set fichierConf=fso.OpenTextFile(PathFichParam&"\"&ValidForm.Intitule.value&".ini", ForAppending)
 				fichierConf.WriteLine ("Intitule=") & ValidForm.Intitule.value
 				fichierConf.WriteLine ("IP=") & ValidForm.AdrIpStation01.value & "." & ValidForm.AdrIpStation02.value & "." & ValidForm.AdrIpStation03.value & "." & ValidForm.AdrIpStation04.value
-				fichierConf.WriteLine ("Masque=") & ValidForm.AdrSmStation01.value & "." & ValidForm.AdrSmStation02.value & "." & ValidForm.AdrSmStation03.value & "." & ValidForm.AdrSmStation04.value
-				fichierConf.WriteLine ("Passerelle=") & ValidForm.AdrRouStation01.value & "." & ValidForm.AdrRouStation02.value & "." & ValidForm.AdrRouStation03.value & "." & ValidForm.AdrRouStation04.value
+				fichierConf.WriteLine ("Mask=") & ValidForm.AdrSmStation01.value & "." & ValidForm.AdrSmStation02.value & "." & ValidForm.AdrSmStation03.value & "." & ValidForm.AdrSmStation04.value
+				fichierConf.WriteLine ("Gateway=") & ValidForm.AdrRouStation01.value & "." & ValidForm.AdrRouStation02.value & "." & ValidForm.AdrRouStation03.value & "." & ValidForm.AdrRouStation04.value
 				fichierConf.WriteLine ("DNS1=") & ValidForm.AdrIpDNS101.value & "." & ValidForm.AdrIpDNS102.value & "." & ValidForm.AdrIpDNS103.value & "." & ValidForm.AdrIpDNS104.value
 				fichierConf.WriteLine ("DNS2=") & ValidForm.AdrIpDNS201.value & "." & ValidForm.AdrIpDNS202.value & "." & ValidForm.AdrIpDNS203.value & "." & ValidForm.AdrIpDNS204.value
 				fichierConf.close
@@ -300,7 +297,7 @@ End Sub
 
 Function Refresh (PathFichParam)
 	'Cette fonction permet de récupérrer les configuration réseau inscrite dans un fichier, elle le lit, les récupère et les applique
-	Dim AdrIp, Masque, Passerelle, AdrDNS1, AdrDNS2, oF2
+	Dim AdrIp, Mask, Gateway, AdrDNS1, AdrDNS2, oF2
 	Const ForReading = 1, ForWriting = 2, ForAppending = 8
 		If fso.FolderExists(PathFichParam) Then
 			For each oF2 in  fso.GetFolder(PathFichParam).Files
@@ -320,20 +317,20 @@ Function Refresh (PathFichParam)
 											ValidForm.AdrIpStation04.value = Split(AdrIp,".",4,1)(3)
 										End if
 										
-										If Ucase("MASQUE") = Ucase(Split(line,"=",2,1)(0)) Then
-											Masque = Ucase(Split(line,"=",2,1)(1))
-											ValidForm.AdrSmStation01.value = Split(Masque,".",4,1)(0)
-											ValidForm.AdrSmStation02.value = Split(Masque,".",4,1)(1)
-											ValidForm.AdrSmStation03.value = Split(Masque,".",4,1)(2)
-											ValidForm.AdrSmStation04.value = Split(Masque,".",4,1)(3)
+										If Ucase("MASK") = Ucase(Split(line,"=",2,1)(0)) Then
+											Mask = Ucase(Split(line,"=",2,1)(1))
+											ValidForm.AdrSmStation01.value = Split(Mask,".",4,1)(0)
+											ValidForm.AdrSmStation02.value = Split(Mask,".",4,1)(1)
+											ValidForm.AdrSmStation03.value = Split(Mask,".",4,1)(2)
+											ValidForm.AdrSmStation04.value = Split(Mask,".",4,1)(3)
 										End if
 										
-										If Ucase("PASSERELLE") = Ucase(Split(line,"=",2,1)(0)) Then
-											Passerelle = Ucase(Split(line,"=",2,1)(1))
-											ValidForm.AdrRouStation01.value = Split(Passerelle,".",4,1)(0)
-											ValidForm.AdrRouStation02.value = Split(Passerelle,".",4,1)(1)
-											ValidForm.AdrRouStation03.value = Split(Passerelle,".",4,1)(2)
-											ValidForm.AdrRouStation04.value = Split(Passerelle,".",4,1)(3)
+										If Ucase("GATEWAY") = Ucase(Split(line,"=",2,1)(0)) Then
+											Gateway = Ucase(Split(line,"=",2,1)(1))
+											ValidForm.AdrRouStation01.value = Split(Gateway,".",4,1)(0)
+											ValidForm.AdrRouStation02.value = Split(Gateway,".",4,1)(1)
+											ValidForm.AdrRouStation03.value = Split(Gateway,".",4,1)(2)
+											ValidForm.AdrRouStation04.value = Split(Gateway,".",4,1)(3)
 										End if
 										
 										If Ucase("DNS1") = Ucase(Split(line,"=",2,1)(0)) Then
@@ -360,7 +357,7 @@ End Function
 
 Function GetIPConfig (PathFichParam)
 	'Cette fonction permet de récupérrer les configuration réseau inscrite dans un fichier, elle le lit, les récupère et les applique
-	Dim AdrIp, Masque, Passerelle, AdrDNS1, AdrDNS2, oF2
+	Dim AdrIp, Mask, Gateway, AdrDNS1, AdrDNS2, oF2
 	Const ForReading = 1, ForWriting = 2, ForAppending = 8
 	Dim tamp
 	tamp = msgbox("Etes vous sûr de vouloir appliquer ces paramètres ?", vbExclamation+vbOKCancel, "Ajout d'une configuration")
@@ -377,12 +374,12 @@ Function GetIPConfig (PathFichParam)
 											AdrIp = Ucase(Split(line,"=",2,1)(1))
 										End if
 										
-										If Ucase("MASQUE") = Ucase(Split(line,"=",2,1)(0)) Then
-											Masque = Ucase(Split(line,"=",2,1)(1))
+										If Ucase("MASK") = Ucase(Split(line,"=",2,1)(0)) Then
+											Mask = Ucase(Split(line,"=",2,1)(1))
 										End if
 										
-										If Ucase("PASSERELLE") = Ucase(Split(line,"=",2,1)(0)) Then
-											Passerelle = Ucase(Split(line,"=",2,1)(1))
+										If Ucase("GATEWAY") = Ucase(Split(line,"=",2,1)(0)) Then
+											Gateway = Ucase(Split(line,"=",2,1)(1))
 										End if
 										
 										If Ucase("DNS1") = Ucase(Split(line,"=",2,1)(0)) Then
@@ -398,7 +395,7 @@ Function GetIPConfig (PathFichParam)
 			Next
 		End if
 			'On applique les nouvelles configuration réseau qu'on a lu dans le fichier
-			objShell.Run "netsh interface ip set address name=""Connexion au réseau local"" static " & AdrIP & " " & Masque & " " & Passerelle & " " & 1, 0, True
+			objShell.Run "netsh interface ip set address name=""Connexion au réseau local"" static " & AdrIP & " " & Mask & " " & Gateway & " " & 1, 0, True
 			objShell.Run "netsh interface ip set dns name=""Connexion au réseau local"" static "& AdrDNS1, 0, True
 			objShell.Run "netsh interface ip add dns name=""Connexion au réseau local"" addr="& AdrDNS2, 0, True	
 			MsgBox "Changement d'ip appliqué avec succès !" ,vbInformation+VBtittle
@@ -452,7 +449,7 @@ Sub Annuler()
 End Sub
 
 Sub Aide()
-MsgBox "Bienvenue dans le menu contextuel de l'aide du logiciel ChangeIP, afin de modifier sa configuration réseau, l'utilisateur doit être administrateur ou membre du croupe Opérateur de Configuration Réseau. On peut se servir de la MMC ou de l'outil fourni avec Change IP : ADMIN RESEAU"&Chr(10)&"L'utilisateur doit entrer dans les champs de saisie les paramètres de sa futur configuration, celle ci peut être appliquée directement ou peut être sauvegardé dans la liste"&Chr(10)&Chr(10)&"-	Le bouton « Appliquer » permet d’appliquer une nouvelle configuration réseau au préalablement saisie par l’utilisateur ou sélectionné dans la liste des configuration sauvegardées"&Chr(10)&Chr(10)&"-	Le bouton « Restaurer DHCP » applique un DHCP à l’IP ainsi qu’aux DNS"&Chr(10)&Chr(10)&"-	Le bouton « Ajouter » permet de sauvegarder la configuration réseau au préalablement saisie par l’utilisateur"&Chr(10)&Chr(10)&"-	Le bouton « Supprimer » permet de supprimer une sauvegarde au préalablement sélectionné dans la liste"&Chr(10)&Chr(10)&"-	Le bouton « Modifier » permet modifier une configuration réseau existante"&Chr(10)&Chr(10), vbInformation+vbOKOnly, "Aide"
+MsgBox "Bienvenue dans le menu contextuel de l'aide du logiciel ChangeIP, afin de modifier sa configuration réseau, l'utilisateur doit être administrateur ou membre du croupe Opérateur de Configuration Réseau. On peut se servir de la MMC ou de l'outil fourni avec Change IP : ADMIN RESEAU"&Chr(10)&"L'utilisateur doit entrer dans les champs de saisie les paramètres de sa futur configuration, celle ci peut être appliquée directement ou peut être sauvegardé dans la liste"&Chr(10)&Chr(10)&"-	Le bouton « Apply » permet d’appliquer une nouvelle configuration réseau au préalablement saisie par l’utilisateur ou sélectionné dans la liste des configuration sauvegardées"&Chr(10)&Chr(10)&"-	Le bouton « Restore DHCP » applique un DHCP à l’IP ainsi qu’aux DNS"&Chr(10)&Chr(10)&"-	Le bouton « Add » permet de sauvegarder la configuration réseau au préalablement saisie par l’utilisateur"&Chr(10)&Chr(10)&"-	Le bouton « Delete » permet de supprimer une sauvegarde au préalablement sélectionné dans la liste"&Chr(10)&Chr(10)&"-	Le bouton « Update » permet modifier une configuration réseau existante"&Chr(10)&Chr(10), vbInformation+vbOKOnly, "Aide"
 End Sub
 
 '############################
