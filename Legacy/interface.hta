@@ -1,0 +1,792 @@
+<html>
+<HTA:APPLICATION 
+ICON="laposte.ico"
+SCROLL="no"
+SHOWINTASKBAR="yes"
+SINGLEINSTANCE="yes"
+WINDOWSTATE="no"
+CAPTION="yes"
+MAXIMIZEBUTTON="no"
+MINIMIZEBUTTON="yes"
+SYSMENU="yes"
+BORDER="thin"
+BORDERSTYLE="Normal"
+CONTEXTMENU="no"
+SELECTION="no">
+<META HTTP-EQUIV="MSThemeCompatible" CONTENT="Yes">
+<head> 
+<OBJECT ID="objShell" CLASSID="clsid:{72C24DD5-D70A-438B-8A42-98424B88AFB8}" ProgID="WScript.Shell.1"></OBJECT> 
+<title>NetworkConfigScript by @ThP</title>
+<style type='text/css'>
+BODY {background:ButtonFace;} 
+input {
+background-color:ButtonFace;
+text-align:center;
+}
+ 
+body
+{background-color:#9DC5FF;
+}
+.Intro
+{
+background-color:#5195FA;
+align:center;
+height : 30px;
+width : 100%;
+font:bold;
+border-radius: 10px 10px 10px 10px;
+font-size:24px;
+}
+.red
+{font:bold;
+color:red;
+background-color:white;
+}
+aside
+{
+    position: relative;
+	align:right;
+    width: 235px;
+    background-color: #706b64;
+    box-shadow: 0px 2px 5px #1c1a19;
+    border-radius: 5px;
+    padding: 10px;
+    color: white;
+    font-size: 0.9em;
+}
+ 
+</style>
+</head>
+<body>  
+<table border="2" width="315">
+<tr>
+<td><SPAN class="intro"><center>Changement d'adresse IP</center></SPAN> </td>
+</tr>
+<table border="2" width="315">
+<tr>
+<td class="red">/!\ IMPORTANT : Cet outil est à l'usage uniquement des administrateurs Ou utilisateurs membre du groupe "Opérateurs de Configuration Réseau"</td>
+</tr>
+</table>
+</table>
+<table border="2">
+<form name="ValidForm">
+<td>Intitulé IP:</td>
+<td class="blue">
+<input maxlength="27" type='text'  class="IP" name="Intitule" size="27"></td><tr>
+
+<td>Adresse IP :</td> 
+<td class="blue">
+<input maxlength="3" type='text' class="IP" onKeyUp="IPCheckAdrIpStation01()" name="AdrIpStation01" size="3">
+<input maxlength="3" type='text'  class="IP" onKeyUp="IPCheckAdrIpStation02()" name="AdrIpStation02" size="3">
+<input maxlength="3" type='text'  class="IP" onKeyUp="IPCheckAdrIpStation03()" name="AdrIpStation03" size="3">
+<input maxlength="3" type='text'  class="IP" onKeyUp="IPCheckAdrIpStation04()" name="AdrIpStation04" size="3"></td><tr>
+ 
+<td>Masque:</td>
+<td class="blue">
+<input maxlength="3" type='text'  class="IP"  onKeyUp="IpCheckAdrSmStation01()" name="AdrSmStation01" size="3" value="255">
+<input maxlength="3" type='text'  class="IP"  onKeyUp="IpCheckAdrSmStation02()" name="AdrSmStation02" size="3" value="255">
+<input maxlength="3" type='text'  class="IP"  onKeyUp="IpCheckAdrSmStation03()" name="AdrSmStation03" size="3" value="255">
+<input maxlength="3" type='text'  class="IP"  onKeyUp="IpCheckAdrSmStation04()" name="AdrSmStation04" size="3" value="0"></td><tr>
+ 
+<td>Passerelle:</td>
+<td class="blue"> 
+<input maxlength="3" type='text'  class="IP"  onKeyUp="IpCheckAdrRouStation01()" name="AdrRouStation01" size="3">
+<input maxlength="3" type='text'  class="IP"  onKeyUp="IpCheckAdrRouStation02()" name="AdrRouStation02" size="3">
+<input maxlength="3" type='text'  class="IP"  onKeyUp="IpCheckAdrRouStation03()" name="AdrRouStation03" size="3">
+<input maxlength="3" type='text'  class="IP"  onKeyUp="IpCheckAdrRouStation04()" name="AdrRouStation04" size="3" value="1"></td><tr>
+ 
+<td>Adresse DNS 1 :</td>
+<td class="blue"> 
+<input maxlength="3" type='text'  class="IP"  onKeyUp="IpCheckAdrIpDNS101()" name="AdrIpDNS101" size="3">
+<input maxlength="3" type='text'  class="IP"  onKeyUp="IpCheckAdrIpDNS102()" name="AdrIpDNS102" size="3">
+<input maxlength="3" type='text'  class="IP"  onKeyUp="IpCheckAdrIpDNS103()" name="AdrIpDNS103" size="3">
+<input maxlength="3" type='text'  class="IP"  onKeyUp="IpCheckAdrIpDNS104()" name="AdrIpDNS104" size="3"></td><tr>
+ 
+ 
+<td>Adresse DNS 2 :</td>
+<td class="blue"> 
+<input maxlength="3" type='text'  class="IP"  onKeyUp="IpCheckAdrIpDNS201()" name="AdrIpDNS201" size="3">
+<input maxlength="3" type='text'  class="IP"  onKeyUp="IpCheckAdrIpDNS202()" name="AdrIpDNS202" size="3">
+<input maxlength="3" type='text'  class="IP"  onKeyUp="IpCheckAdrIpDNS203()" name="AdrIpDNS203" size="3">
+<input maxlength="3" type='text'  class="IP"  onKeyUp="IpCheckAdrIpDNS204()" name="AdrIpDNS204" size="3"></td><tr>
+<tr>
+
+<aside>
+		<table border="0" cellpadding="0" cellspacing="30">
+		
+		<INPUT TYPE="button" NAME="ajouter" class="bouton" style="width:90px" VALUE="Ajouter" onclick="AjouterIP()">&nbsp;&nbsp;
+		<INPUT TYPE="button" NAME="supprimer" class="bouton" style="width:90px" VALUE="Supprimer" onclick="Supprimer(PathFichParam)">&nbsp;&nbsp;
+		<INPUT TYPE="button" NAME="selectionner" class="bouton" style="width:90px" VALUE="Modifier" onclick="ModifConfig(PathFichParam)">&nbsp;&nbsp;
+		<select name="listeIP" size="5" onclick="Refresh(PathFichParam)"></select>
+		</table>
+		
+</aside>
+
+</table>
+
+<center>
+		<INPUT TYPE="button" NAME="appliquer" class="bouton" VALUE="Appliquer" onclick="Valider()">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<INPUT TYPE="button" NAME="annuler" class="bouton" VALUE="Restaurer DHCP" onclick="Annuler()">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<INPUT TYPE="button" NAME="aide" class="bouton" VALUE="Aide" onclick="Aide()">
+</center>
+
+
+</form>
+ 
+<script language="VBScript" defer=true>
+window.moveTo 510,200
+
+Set fso=CreateObject("Scripting.FileSystemObject")
+
+'Chemin du repertoire de C:\Users\Appdata\Roaming, Ce chemin est différents en fonction de chaques utilisateurs
+Dim sourcepath
+sourcepath = "C:"
+
+'Chemin du dossier param où sont ranger les configurations réseaux.
+Dim PathFichParam
+
+If not fso.FolderExists(sourcepath & "\Data") Then
+   fso.CreateFolder(sourcepath & "\Data")
+End If
+DataPath = sourcepath & "\Data"
+
+If not fso.FolderExists(DataPath & "\ChangeIP") Then
+	fso.CreateFolder(Datapath & "\ChangeIP")
+End If
+
+PathFichParam=Datapath & "\ChangeIP"
+
+Sub Window_OnLoad
+	'Charge les configurations .ini dans la liste de l'interface graphique
+	CenterWindow 360,550
+	Const ForReading = 1, ForWriting = 2, ForAppending = 8
+	
+	Dim oFl, oF1d
+	Set oOption = Document.createElement("OPTION")
+	If fso.FolderExists(PathFichParam) Then									'Si le dossier existe, on l'ouvre, sinon, on le créé
+		For each oFl in  fso.GetFolder(PathFichParam).Files					'Pour tout les fichier dans le dossier param
+		Set prefIP=fso.OpenTextFile(PathFichParam&"\"& oFl.Name,ForReading) 'Ouvre tout les fichiers .ini contenu dans le répertoir param
+		Do While prefIP.AtEndOfStream <> True								'Tant que le fichier contient encore quelque chose (des lignes)
+				Set oOption = Document.createElement("OPTION")
+				line = prefIP.ReadLine
+				chaine = LCase(left(line, Instr(line, "=")))
+				If (chaine = "intitule=") Then
+					oOption.Text = Mid(line, Instr(line, "=")+1)			'On ajoute son intitulé à la liste de l'interface graphique
+					oOption.Value = Mid(line, Instr(line, "=")+1)
+					ValidForm.listeIP.Add(oOption)
+				End if
+		Loop
+		prefIP.Close
+		Next
+	Else
+		
+	End if
+End Sub
+
+
+Sub CenterWindow(x,y)
+	'Permet de centrer l'interface graphique
+	
+	window.resizeTo x, y
+	iLeft = window.screen.availWidth/2 - x/2
+	itop = window.screen.availHeight/2 - y/2
+	window.moveTo ileft, itop
+End Sub
+
+Function Supprimer(PathFichParam)
+	'Cette fonction permet de supprimer une configuration réseau (Elle supprime ainsi le fichier .ini correspondant)
+	Dim fichierEffacer, tamp
+	Const ForReading = 1, ForWriting = 2, ForAppending = 8
+	tamp = msgbox("Etes vous sûr de vouloir supprimer ces paramètres ?", vbExclamation+vbOKCancel, "Suppression d'une configuration")
+	If (tamp=1) Then
+		If fso.FolderExists(PathFichParam) Then									'Si le dossier existe, on l'ouvre, sinon, on le créé
+			For each oF2 in  fso.GetFolder(PathFichParam).Files					'Pour chaque fichier dans le dossier
+			Set prefIP=fso.OpenTextFile(PathFichParam&"\"& oF2.Name,ForReading) 'Ouvre tout les fichiers .ini contenu dans le repertoir param
+			firstLine = prefIP.ReadLine
+						If (ValidForm.listeIP.Value = Mid(firstLine, Instr(firstLine, "=")+1)) Then		'Si l'intitulé du fichier correspond à l'intitulé selectionné dans la liste
+								fichierEffacer = PathFichParam&"\"& oF2.Name							'On le supprime grâce à DeleteFile
+			prefIP.close
+								fso.DeleteFile fichierEffacer, True
+						End If
+			
+			Next
+		Else
+			Set oFld=fso.CreateFolder(sourcepath&"\param")						'On le créé si le dossier param n'existe pas
+		End If
+	Else
+		msgbox "Les paramètres n'ont pas été supprimés à vos sauvegardes", vbInformation+vbOKOnly, "Abandon de la suppression des paramètres"
+	End If
+	document.location.reload()
+End Function
+
+Function ModifConfig(PathFichParam)
+	'Cette fonction permet de modifier une configuration réseau (Elle supprime ainsi le fichier .ini correspondant)
+	Dim fichierModifier, tamp
+	Const ForReading = 1, ForWriting = 2, ForAppending = 8
+	tamp = msgbox("Etes vous sûr de vouloir modifier ces paramètres ?", vbExclamation+vbOKCancel, "Suppression d'une configuration")
+	If (tamp=1) Then
+		If fso.FolderExists(PathFichParam) Then									'Si le dossier existe, on l'ouvre, sinon, on le créé
+			For each oF2 in  fso.GetFolder(PathFichParam).Files					'Pour chaque fichier dans le dossier
+			Set prefIP=fso.OpenTextFile(PathFichParam&"\"& oF2.Name,ForReading) 'Ouvre tout les fichiers .ini contenu dans le repertoir param
+			firstLine = prefIP.ReadLine
+						If (ValidForm.listeIP.Value = Mid(firstLine, Instr(firstLine, "=")+1)) Then		'Si l'intitulé du fichier correspond à l'intitulé selectionné dans la liste
+								fichierModifier = PathFichParam&"\"& oF2.Name							'On le supprime grâce à DeleteFile
+			prefIP.close
+								fso.DeleteFile fichierModifier, True
+						End If
+			Next
+				'Création du fichier correspondant à l'intitulé
+				fso.CreateTextFile PathFichParam&"\"&ValidForm.Intitule.value&".ini"
+				
+				'Ajout des paramètres de configurations réseau dans ce fichier
+				set fichierConf=fso.OpenTextFile(PathFichParam&"\"&ValidForm.Intitule.value&".ini", ForAppending)
+				fichierConf.WriteLine ("Intitule=") & ValidForm.Intitule.value
+				fichierConf.WriteLine ("IP=") & ValidForm.AdrIpStation01.value & "." & ValidForm.AdrIpStation02.value & "." & ValidForm.AdrIpStation03.value & "." & ValidForm.AdrIpStation04.value
+				fichierConf.WriteLine ("Masque=") & ValidForm.AdrSmStation01.value & "." & ValidForm.AdrSmStation02.value & "." & ValidForm.AdrSmStation03.value & "." & ValidForm.AdrSmStation04.value
+				fichierConf.WriteLine ("Passerelle=") & ValidForm.AdrRouStation01.value & "." & ValidForm.AdrRouStation02.value & "." & ValidForm.AdrRouStation03.value & "." & ValidForm.AdrRouStation04.value
+				fichierConf.WriteLine ("DNS1=") & ValidForm.AdrIpDNS101.value & "." & ValidForm.AdrIpDNS102.value & "." & ValidForm.AdrIpDNS103.value & "." & ValidForm.AdrIpDNS104.value
+				fichierConf.WriteLine ("DNS2=") & ValidForm.AdrIpDNS201.value & "." & ValidForm.AdrIpDNS202.value & "." & ValidForm.AdrIpDNS203.value & "." & ValidForm.AdrIpDNS204.value
+				fichierConf.close
+		Else
+			Set oFld=fso.CreateFolder(sourcepath&"\param")						'On le créé si le dossier param n'existe pas
+		End If
+	Else
+		msgbox "Les paramètres n'ont pas été supprimés à vos sauvegardes", vbInformation+vbOKOnly, "Abandon de la suppression des paramètres"
+	End If
+	Refresh (PathFichParam)
+End Function
+
+
+Sub AjouterIP()
+	'Cette fonction permet d'ajouter une configuration réseau, elle créé un fichier possedant tout les paramètres qu'a saisie l'utilisateur
+	Const ForReading = 1, ForWriting = 2, ForAppending = 8
+	Sleep "1"
+	Dim tamp
+	tamp = msgbox("Etes vous sûr de vouloir ajouter ces paramètres ?", vbExclamation+vbOKCancel, "Ajout d'une configuration")
+	If (tamp=1) Then
+		If(ValidForm.Intitule.value="") Then
+			msgbox "Veuillez entrer un intitulé", vbExclamation+vbOKOnly, "Champs de saisie vide"
+		Else
+			If not fso.FileExists(PathFichParam&"\"&ValidForm.Intitule.value&".ini") then
+			'Si le fichier correspondant à l'intitulé que nous avons ajouté à la liste n'existe pas, on le créé.
+				'Ouverture et mise à jour de la liste des IP + Ajout de l'intitulé
+				Set oOption = Document.createElement("OPTION")
+				oOption.Text = ValidForm.Intitule.value
+				oOption.Value = ValidForm.Intitule.value
+				ValidForm.listeIP.Add(oOption)
+				
+				'Création du fichier correspondant à l'intitulé
+				fso.CreateTextFile PathFichParam&"\"&ValidForm.Intitule.value&".ini"
+				
+				'Ajout des paramètres de configurations réseau dans ce fichier
+				set fichierConf=fso.OpenTextFile(PathFichParam&"\"&ValidForm.Intitule.value&".ini", ForAppending)
+				fichierConf.WriteLine ("Intitule=") & ValidForm.Intitule.value
+				fichierConf.WriteLine ("IP=") & ValidForm.AdrIpStation01.value & "." & ValidForm.AdrIpStation02.value & "." & ValidForm.AdrIpStation03.value & "." & ValidForm.AdrIpStation04.value
+				fichierConf.WriteLine ("Masque=") & ValidForm.AdrSmStation01.value & "." & ValidForm.AdrSmStation02.value & "." & ValidForm.AdrSmStation03.value & "." & ValidForm.AdrSmStation04.value
+				fichierConf.WriteLine ("Passerelle=") & ValidForm.AdrRouStation01.value & "." & ValidForm.AdrRouStation02.value & "." & ValidForm.AdrRouStation03.value & "." & ValidForm.AdrRouStation04.value
+				fichierConf.WriteLine ("DNS1=") & ValidForm.AdrIpDNS101.value & "." & ValidForm.AdrIpDNS102.value & "." & ValidForm.AdrIpDNS103.value & "." & ValidForm.AdrIpDNS104.value
+				fichierConf.WriteLine ("DNS2=") & ValidForm.AdrIpDNS201.value & "." & ValidForm.AdrIpDNS202.value & "." & ValidForm.AdrIpDNS203.value & "." & ValidForm.AdrIpDNS204.value
+				fichierConf.close
+			Else
+				'Si le fichier existe déjà, on le notifie à l'utilisateur.
+				msgbox "Cet intitulé est déjà pris. Veuillez en choisir un autre."
+			End if
+		End If
+	Else
+		msgbox "Les paramètres n'ont pas été ajoutés à vos sauvegardes", vbInformation+vbOKOnly, "Abandon de l'ajout de configuration réseau"
+		document.location.reload()
+	End if
+End Sub
+
+Function Refresh (PathFichParam)
+	'Cette fonction permet de récupérrer les configuration réseau inscrite dans un fichier, elle le lit, les récupère et les applique
+	Dim AdrIp, Masque, Passerelle, AdrDNS1, AdrDNS2, oF2
+	Const ForReading = 1, ForWriting = 2, ForAppending = 8
+		If fso.FolderExists(PathFichParam) Then
+			For each oF2 in  fso.GetFolder(PathFichParam).Files
+			Set prefIP=fso.OpenTextFile(PathFichParam&"\"& oF2.Name,ForReading) 'Ouvre tout les fichiers .ini contenu dans le répertoir param
+							firstLine = prefIP.ReadLine
+							If (ValidForm.listeIP.Value = Mid(firstLine, Instr(firstLine, "=")+1)) Then
+								Do While prefIP.AtEndOfStream <> True
+									line = prefIP.ReadLine
+										'On met les configurations réseau dans les variables
+										ValidForm.Intitule.value = ValidForm.listeIP.Value
+										
+										If Ucase("IP") = Ucase(Split(line,"=",2,1)(0)) Then
+											AdrIp = Ucase(Split(line,"=",2,1)(1))
+											ValidForm.AdrIpStation01.value = Split(AdrIp,".",4,1)(0)
+											ValidForm.AdrIpStation02.value = Split(AdrIp,".",4,1)(1)
+											ValidForm.AdrIpStation03.value = Split(AdrIp,".",4,1)(2)
+											ValidForm.AdrIpStation04.value = Split(AdrIp,".",4,1)(3)
+										End if
+										
+										If Ucase("MASQUE") = Ucase(Split(line,"=",2,1)(0)) Then
+											Masque = Ucase(Split(line,"=",2,1)(1))
+											ValidForm.AdrSmStation01.value = Split(Masque,".",4,1)(0)
+											ValidForm.AdrSmStation02.value = Split(Masque,".",4,1)(1)
+											ValidForm.AdrSmStation03.value = Split(Masque,".",4,1)(2)
+											ValidForm.AdrSmStation04.value = Split(Masque,".",4,1)(3)
+										End if
+										
+										If Ucase("PASSERELLE") = Ucase(Split(line,"=",2,1)(0)) Then
+											Passerelle = Ucase(Split(line,"=",2,1)(1))
+											ValidForm.AdrRouStation01.value = Split(Passerelle,".",4,1)(0)
+											ValidForm.AdrRouStation02.value = Split(Passerelle,".",4,1)(1)
+											ValidForm.AdrRouStation03.value = Split(Passerelle,".",4,1)(2)
+											ValidForm.AdrRouStation04.value = Split(Passerelle,".",4,1)(3)
+										End if
+										
+										If Ucase("DNS1") = Ucase(Split(line,"=",2,1)(0)) Then
+											AdrDNS1 = Ucase(Split(line,"=",2,1)(1))
+											ValidForm.AdrIpDNS101.value = Split(AdrDNS1,".",4,1)(0)
+											ValidForm.AdrIpDNS102.value = Split(AdrDNS1,".",4,1)(1)
+											ValidForm.AdrIpDNS103.value = Split(AdrDNS1,".",4,1)(2)
+											ValidForm.AdrIpDNS104.value = Split(AdrDNS1,".",4,1)(3)
+										End if
+										
+										If Ucase("DNS2") = Ucase(Split(line,"=",2,1)(0)) Then
+											AdrDNS2 = Ucase(Split(line,"=",2,1)(1))
+											ValidForm.AdrIpDNS201.value = Split(AdrDNS2,".",4,1)(0)
+											ValidForm.AdrIpDNS202.value = Split(AdrDNS2,".",4,1)(1)
+											ValidForm.AdrIpDNS203.value = Split(AdrDNS2,".",4,1)(2)
+											ValidForm.AdrIpDNS204.value = Split(AdrDNS2,".",4,1)(3)
+										End if
+								Loop
+						End if
+			prefIP.Close
+			Next
+		End if
+End Function
+
+Function GetIPConfig (PathFichParam)
+	'Cette fonction permet de récupérrer les configuration réseau inscrite dans un fichier, elle le lit, les récupère et les applique
+	Dim AdrIp, Masque, Passerelle, AdrDNS1, AdrDNS2, oF2
+	Const ForReading = 1, ForWriting = 2, ForAppending = 8
+	Dim tamp
+	tamp = msgbox("Etes vous sûr de vouloir appliquer ces paramètres ?", vbExclamation+vbOKCancel, "Ajout d'une configuration")
+	If (tamp=1) Then
+		If fso.FolderExists(PathFichParam) Then
+			For each oF2 in  fso.GetFolder(PathFichParam).Files
+			Set prefIP=fso.OpenTextFile(PathFichParam&"\"& oF2.Name,ForReading) 'Ouvre tout les fichiers .ini contenu dans le répertoir param
+							firstLine = prefIP.ReadLine
+							If (ValidForm.listeIP.Value = Mid(firstLine, Instr(firstLine, "=")+1)) Then
+								Do While prefIP.AtEndOfStream <> True
+									line = prefIP.ReadLine
+										'On met les configurations réseau dans les variables
+										If Ucase("IP") = Ucase(Split(line,"=",2,1)(0)) Then
+											AdrIp = Ucase(Split(line,"=",2,1)(1))
+										End if
+										
+										If Ucase("MASQUE") = Ucase(Split(line,"=",2,1)(0)) Then
+											Masque = Ucase(Split(line,"=",2,1)(1))
+										End if
+										
+										If Ucase("PASSERELLE") = Ucase(Split(line,"=",2,1)(0)) Then
+											Passerelle = Ucase(Split(line,"=",2,1)(1))
+										End if
+										
+										If Ucase("DNS1") = Ucase(Split(line,"=",2,1)(0)) Then
+											AdrDNS1 = Ucase(Split(line,"=",2,1)(1))
+										End if
+										
+										If Ucase("DNS2") = Ucase(Split(line,"=",2,1)(0)) Then
+											AdrDNS2 = Ucase(Split(line,"=",2,1)(1))
+										End if
+								Loop
+						End if
+			prefIP.Close
+			Next
+		End if
+			'On applique les nouvelles configuration réseau qu'on a lu dans le fichier
+			objShell.Run "netsh interface ip set address name=""Connexion au réseau local"" static " & AdrIP & " " & Masque & " " & Passerelle & " " & 1, 0, True
+			objShell.Run "netsh interface ip set dns name=""Connexion au réseau local"" static "& AdrDNS1, 0, True
+			objShell.Run "netsh interface ip add dns name=""Connexion au réseau local"" addr="& AdrDNS2, 0, True	
+			MsgBox "Changement d'ip appliqué avec succès !" ,vbInformation+VBtittle
+	Else
+		msgbox "Les paramètres n'ont pas étés appliqués", vbInformation+vbOKOnly, "Abandon de de l'application des paramètres réseaux"
+	End If
+End Function
+
+
+
+Sub Valider()
+	'Cette fonction permet d'appliquer une configuration réseau directement saisie par l'utilisateur lorsqu'il clique sur valider.
+	Dim Ips
+	Dim Mask
+	Dim Gateways
+	Dim DNS1
+	Dim DNS2
+	Dim tamp
+	
+	tamp = msgbox("Etes vous sûr de vouloir appliquer ces paramètres ?", vbExclamation+vbOKCancel, "Ajout d'une configuration")
+	If (tamp=1) Then
+		Ips = ValidForm.AdrIpStation01.value & "." & ValidForm.AdrIpStation02.value & "." & ValidForm.AdrIpStation03.value & "." & ValidForm.AdrIpStation04.value
+		Mask = ValidForm.AdrSmStation01.value & "." & ValidForm.AdrSmStation02.value & "." & ValidForm.AdrSmStation03.value & "." & ValidForm.AdrSmStation04.value
+		Gateways = ValidForm.AdrRouStation01.value & "." & ValidForm.AdrRouStation02.value & "." & ValidForm.AdrRouStation03.value & "." & ValidForm.AdrRouStation04.value
+		DNS1 = ValidForm.AdrIpDNS101.value & "." & ValidForm.AdrIpDNS102.value & "." & ValidForm.AdrIpDNS103.value & "." & ValidForm.AdrIpDNS104.value
+		DNS2 = ValidForm.AdrIpDNS201.value & "." & ValidForm.AdrIpDNS202.value & "." & ValidForm.AdrIpDNS203.value & "." & ValidForm.AdrIpDNS204.value
+	 
+		objShell.Run "netsh interface ip set address name=""Connexion au réseau local"" static " & Ips & " " & Mask & " " & Gateways & " " & 1, 0, True
+		objShell.Run "netsh interface ip set dns name=""Connexion au réseau local"" static "& DNS1, 0, True
+		objShell.Run "netsh interface ip add dns name=""Connexion au réseau local"" addr="& DNS2, 0, True	
+		MsgBox "Changement d'ip appliqué avec succès !" ,vbInformation+VBtittle
+	Else
+		MsgBox "Les paramètres n'ont pas étés appliqués", vbInformation+vbOKOnly, "Abandon de l'application des paramètres réseaux"
+	End If
+  
+End Sub
+ 
+Sub Annuler()
+	'Cette fonction permet d'appliquer un DHCP à l'adresse IP ainsi qu'aux DNS
+	Dim tamp
+	tamp = msgbox("Etes vous sûr de vouloir appliquer les paramètres par défaut et restaurer le DHCP ?", vbExclamation+vbOKCancel, "Ajout d'une configuration")
+	If (tamp=1) Then
+		'L'utilisateur clique sur annuler et l'on restaure un DHCP pour configurer les paramères résaux par défauts.
+		MsgBox "Abandon du changement de l'adresse IP et application des paramètres par défauts",vbInformation+VBtittle,"Assistant Création collection"
+		objShell.Run "netsh interface IPv4 set address name=""Connexion au réseau local"" DHCP", 0, True
+		objShell.Run "netsh interface ip set wins ""Connexion au réseau local"" DHCP", 0, True
+		objShell.Run "netsh interface ip set dns ""Connexion au réseau local"" DHCP", 0, True
+	Else
+		MsgBox "Les paramètres par défauts n'ont pas étés appliqués", vbInformation+vbOKOnly, "Abandon de l'application des paramètres par défauts"
+	End If
+End Sub
+
+Sub Aide()
+MsgBox "Bienvenue dans le menu contextuel de l'aide du logiciel ChangeIP, afin de modifier sa configuration réseau, l'utilisateur doit être administrateur ou membre du croupe Opérateur de Configuration Réseau. On peut se servir de la MMC ou de l'outil fourni avec Change IP : ADMIN RESEAU"&Chr(10)&"L'utilisateur doit entrer dans les champs de saisie les paramètres de sa futur configuration, celle ci peut être appliquée directement ou peut être sauvegardé dans la liste"&Chr(10)&Chr(10)&"-	Le bouton « Appliquer » permet d’appliquer une nouvelle configuration réseau au préalablement saisie par l’utilisateur ou sélectionné dans la liste des configuration sauvegardées"&Chr(10)&Chr(10)&"-	Le bouton « Restaurer DHCP » applique un DHCP à l’IP ainsi qu’aux DNS"&Chr(10)&Chr(10)&"-	Le bouton « Ajouter » permet de sauvegarder la configuration réseau au préalablement saisie par l’utilisateur"&Chr(10)&Chr(10)&"-	Le bouton « Supprimer » permet de supprimer une sauvegarde au préalablement sélectionné dans la liste"&Chr(10)&Chr(10)&"-	Le bouton « Modifier » permet modifier une configuration réseau existante"&Chr(10)&Chr(10), vbInformation+vbOKOnly, "Aide"
+End Sub
+
+'############################
+'############################
+'Ces fonctions permettent le contrôle de saisie de l'utilisateur, il doit uniquement rentrer des chiffres
+'Ces chiffres doivent être compris entre 0 et 255
+ 
+Sub IPCheckAdrIpStation01()
+	On Error Resume Next
+	If ValidForm.AdrIpStation01.Value > 255 OR IsNumeric(ValidForm.AdrIpStation01.Value) = False  Then
+		ValidForm.AdrIpStation01.style.backgroundcolor = "red"
+		Sleep "1"
+		ValidForm.AdrIpStation01.Value = ""
+		ValidForm.AdrIpStation01.style.backgroundcolor = "Buttonface"
+	End If
+	If Len(ValidForm.AdrIpStation01.Value) = 3 OR InStr(ValidForm.AdrIpStation01.Value, ".") > 0 Then
+		ValidForm.AdrIpStation01.Value=Replace(AdrIpStation01.Value,".","")
+		ValidForm.AdrIpStation02.Focus
+		ValidForm.AdrIpStation02.Select
+	End If
+End Sub
+ 
+Sub IPCheckAdrIpStation02()
+	On Error Resume Next
+	If ValidForm.AdrIpStation02.Value > 255 OR IsNumeric(ValidForm.AdrIpStation02.Value) = False  Then
+		ValidForm.AdrIpStation02.style.backgroundcolor = "red"
+		Sleep "1"
+		ValidForm.AdrIpStation02.Value = ""
+		ValidForm.AdrIpStation02.style.backgroundcolor = "Buttonface"
+	End If
+	If Len(ValidForm.AdrIpStation02.Value) = 3 OR InStr(ValidForm.AdrIpStation02.Value, ".") > 0 Then
+		ValidForm.AdrIpStation02.Value=Replace(AdrIpStation02.Value,".","")
+		ValidForm.AdrIpStation03.Focus
+		ValidForm.AdrIpStation03.Select
+	End If
+End Sub    
+ 
+Sub IPCheckAdrIpStation03()
+	On Error Resume Next
+	If ValidForm.AdrIpStation03.Value > 255 OR IsNumeric(ValidForm.AdrIpStation03.Value) = False  Then
+		ValidForm.AdrIpStation03.style.backgroundcolor = "red"
+		Sleep "1"
+		ValidForm.AdrIpStation03.Value = ""
+		ValidForm.AdrIpStation03.style.backgroundcolor = "Buttonface"
+	End If
+	If Len(ValidForm.AdrIpStation03.Value) = 3 OR InStr(ValidForm.AdrIpStation03.Value, ".") > 0 Then
+		ValidForm.AdrIpStation03.Value=Replace(AdrIpStation03.Value,".","")
+		ValidForm.AdrIpStation04.Focus
+		ValidForm.AdrIpStation04.Select
+	End If
+End Sub    
+ 
+Sub IPCheckAdrIpStation04()
+	On Error Resume Next
+	If ValidForm.AdrIpStation04.Value > 255 OR IsNumeric(ValidForm.AdrIpStation04.Value) = False  Then
+		ValidForm.AdrIpStation04.style.backgroundcolor = "red"
+		Sleep "1"
+		ValidForm.AdrIpStation04.Value = ""
+		ValidForm.AdrIpStation04.style.backgroundcolor = "Buttonface"
+	End If
+	If Len(ValidForm.AdrIpStation04.Value) = 3 OR InStr(ValidForm.AdrIpStation04.Value, ".") > 0 Then
+		ValidForm.AdrIpStation04.Value=Replace(ValidForm.AdrIpStation04.Value,".","")
+		ValidForm.AdrSmStation01.Focus
+		ValidForm.AdrSmStation01.Select
+	End If
+End Sub    
+ 
+Sub IPCheckAdrSmStation01()
+	On Error Resume Next
+	If ValidForm.AdrSmStation01.Value > 255 OR IsNumeric(ValidForm.AdrSmStation01.Value) = False  Then
+		ValidForm.AdrSmStation01.style.backgroundcolor = "red"
+		Sleep "1"
+		ValidForm.AdrSmStation01.Value = ""
+		ValidForm.AdrSmStation01.style.backgroundcolor = "Buttonface"
+	End If
+	If Len(ValidForm.AdrSmStation01.Value) = 3 OR InStr(ValidForm.AdrSmStation01.Value, ".") > 0 Then
+		ValidForm.AdrSmStation01.Value=Replace(ValidForm.AdrSmStation01.Value,".","")
+		ValidForm.AdrSmStation02.Focus
+		ValidForm.AdrSmStation02.Select
+	End If
+End Sub    
+ 
+Sub IPCheckAdrSmStation02()
+	On Error Resume Next
+	If ValidForm.AdrSmStation02.Value > 255 OR IsNumeric(ValidForm.AdrSmStation02.Value) = False  Then
+		ValidForm.AdrSmStation02.style.backgroundcolor = "red"
+		Sleep "1"
+		ValidForm.AdrSmStation02.Value = ""
+		ValidForm.AdrSmStation02.style.backgroundcolor = "Buttonface"
+	End If
+	If Len(ValidForm.AdrSmStation02.Value) = 3 OR InStr(ValidForm.AdrSmStation02.Value, ".") > 0 Then
+		ValidForm.AdrSmStation02.Value=Replace(ValidForm.AdrSmStation02.Value,".","")
+		ValidForm.AdrSmStation03.Focus
+		ValidForm.AdrSmStation03.Select
+	End If
+End Sub    
+ 
+Sub IPCheckAdrSmStation03()
+	On Error Resume Next
+	If ValidForm.AdrSmStation03.Value > 255 OR IsNumeric(ValidForm.AdrSmStation03.Value) = False  Then
+		AdrSmStation03.style.backgroundcolor = "red"
+		Sleep "1"
+		ValidForm.AdrSmStation03.Value = ""
+		ValidForm.AdrSmStation03.style.backgroundcolor = "Buttonface"
+	End If
+	If Len(ValidForm.AdrSmStation03.Value) = 3 OR InStr(ValidForm.AdrSmStation03.Value, ".") > 0 Then
+		ValidForm.AdrSmStation03.Value=Replace(ValidForm.AdrSmStation03.Value,".","")
+		ValidForm.AdrSmStation04.Focus
+		ValidForm.AdrSmStation04.Select
+	End If
+End Sub    
+ 
+Sub IPCheckAdrSmStation04()
+	On Error Resume Next
+	If ValidForm.AdrSmStation04.Value > 255 OR IsNumeric(ValidForm.AdrSmStation04.Value) = False  Then
+		ValidForm.AdrSmStation04.style.backgroundcolor = "red"
+		Sleep "1"
+		ValidForm.AdrSmStation04.Value = ""
+		ValidForm.AdrSmStation04.style.backgroundcolor = "Buttonface"
+	End If
+	If Len(ValidForm.AdrSmStation04.Value) = 3 OR InStr(ValidForm.AdrSmStation04.Value, ".") > 0 Then
+		ValidForm.AdrSmStation04.Value=Replace(ValidForm.AdrSmStation04.Value,".","")
+		ValidForm.AdrIpDNS101.Focus
+		ValidForm.AdrIpDNS101.Select
+	End If
+End Sub    
+ 
+Sub IPCheckAdrRouStation01()
+	On Error Resume Next
+	If ValidForm.AdrRouStation01.Value > 255 OR IsNumeric(ValidForm.AdrRouStation01.Value) = False  Then
+		ValidForm.AdrRouStation01.style.backgroundcolor = "red"
+		Sleep "1"
+		ValidForm.AdrRouStation01.Value = ""
+		ValidForm.AdrRouStation01.style.backgroundcolor = "Buttonface"
+	End If
+	If Len(ValidForm.AdrRouStation01.Value) = 3 OR InStr(ValidForm.AdrRouStation01.Value, ".") > 0 Then
+		ValidForm.AdrRouStation01.Value=Replace(ValidForm.AdrRouStation01.Value,".","")
+		ValidForm.AdrRouStation02.Focus
+		ValidForm.AdrRouStation02.Select
+	End If
+End Sub    
+ 
+Sub IPCheckAdrRouStation02()
+	On Error Resume Next
+	If ValidForm.AdrRouStation02.Value > 255 OR IsNumeric(ValidForm.AdrRouStation02.Value) = False  Then
+		ValidForm.AdrRouStation02.style.backgroundcolor = "red"
+		Sleep "1"
+		ValidForm.AdrRouStation02.Value = ""
+		ValidForm.AdrRouStation02.style.backgroundcolor = "Buttonface"
+	End If
+	If Len(ValidForm.AdrRouStation02.Value) = 3 OR InStr(ValidForm.AdrRouStation02.Value, ".") > 0 Then
+		ValidForm.AdrRouStation02.Value=Replace(ValidForm.AdrRouStation02.Value,".","")
+		ValidForm.AdrRouStation03.Focus
+		ValidForm.AdrRouStation03.Select
+	End If
+End Sub    
+ 
+Sub IPCheckAdrRouStation03()
+	On Error Resume Next
+	If ValidForm.AdrRouStation03.Value > 255 OR IsNumeric(ValidForm.AdrRouStation03.Value) = False  Then
+		ValidForm.AdrRouStation03.style.backgroundcolor = "red"
+		Sleep "1"
+		ValidForm.AdrRouStation03.Value = ""
+		ValidForm.AdrRouStation03.style.backgroundcolor = "Buttonface"
+	End If
+	If Len(ValidForm.AdrRouStation03.Value) = 3 OR InStr(ValidForm.AdrRouStation03.Value, ".") > 0 Then
+		ValidForm.AdrRouStation03.Value=Replace(ValidForm.AdrRouStation03.Value,".","")
+		ValidForm.AdrRouStation04.Focus
+		ValidForm.AdrRouStation04.Select
+	End If
+	
+End Sub    
+ 
+Sub IPCheckAdrRouStation04()
+	On Error Resume Next
+	If ValidForm.AdrRouStation04.Value > 255 OR IsNumeric(ValidForm.AdrRouStation04.Value) = False  Then
+		ValidForm.AdrRouStation04.style.backgroundcolor = "red"
+		Sleep "1"
+		ValidForm.AdrRouStation04.Value = ""
+		ValidForm.AdrRouStation04.style.backgroundcolor = "Buttonface"
+	End If
+	If Len(AdrRouStation04.Value) = 3 OR InStr(ValidForm.AdrRouStation04.Value, ".") > 0 Then
+		ValidForm.AdrRouStation04.Value=Replace(ValidForm.AdrRouStation04.Value,".","")
+		ValidForm.AdrIpDNS101.Focus
+		ValidForm.AdrIpDNS101.Select
+	End If
+End Sub 
+ 
+Sub IPCheckAdrIpDNS101()
+	On Error Resume Next
+	If ValidForm.AdrIpDNS101.Value > 255 OR IsNumeric(ValidForm.AdrIpDNS101.Value) = False  Then
+		ValidForm.AdrIpDNS101.style.backgroundcolor = "red"
+		Sleep "1"
+		ValidForm.AdrIpDNS101.Value = ""
+		ValidForm.AdrIpDNS101.style.backgroundcolor = "Buttonface"
+	End If
+	If Len(ValidForm.AdrIpDNS101.Value) = 3 OR InStr(ValidForm.AdrIpDNS101.Value, ".") > 0 Then
+		ValidForm.AdrIpDNS101.Value=Replace(ValidForm.AdrIpDNS101.Value,".","")
+		ValidForm.AdrIpDNS102.Focus
+		ValidForm.AdrIpDNS102.Select
+	End If
+End Sub    
+ 
+Sub IPCheckAdrIpDNS102()
+	On Error Resume Next
+	If ValidForm.AdrIpDNS102.Value > 255 OR IsNumeric(ValidForm.AdrIpDNS102.Value) = False  Then
+		ValidForm.AdrIpDNS102.style.backgroundcolor = "red"
+		Sleep "1"
+		ValidForm.AdrIpDNS102.Value = ""
+		ValidForm.AdrIpDNS102.style.backgroundcolor = "Buttonface"
+	End If
+	If Len(ValidForm.AdrIpDNS102.Value) = 3 OR InStr(ValidForm.AdrIpDNS102.Value, ".") > 0 Then
+		ValidForm.AdrIpDNS102.Value=Replace(ValidForm.AdrIpDNS102.Value,".","")
+		ValidForm.AdrIpDNS103.Focus
+		ValidForm.AdrIpDNS103.Select
+	End If
+End Sub    
+ 
+Sub IPCheckAdrIpDNS103()
+	On Error Resume Next
+	If ValidForm.AdrIpDNS103.Value > 255 OR IsNumeric(ValidForm.AdrIpDNS103.Value) = False  Then
+		ValidForm.AdrIpDNS103.style.backgroundcolor = "red"
+		Sleep "1"
+		ValidForm.AdrIpDNS103.Value = ""
+		ValidForm.AdrIpDNS103.style.backgroundcolor = "Buttonface"
+	End If
+	If Len(AdrIpDNS103.Value) = 3 OR InStr(ValidForm.AdrIpDNS103.Value, ".") > 0 Then
+		ValidForm.AdrIpDNS103.Value=Replace(ValidForm.AdrIpDNS103.Value,".","")
+		ValidForm.AdrIpDNS104.Focus
+		ValidForm.AdrIpDNS104.Select
+	End If
+End Sub    
+ 
+Sub IPCheckAdrIpDNS104()
+	On Error Resume Next
+	If ValidForm.AdrIpDNS104.Value > 255 OR IsNumeric(ValidForm.AdrIpDNS104.Value) = False  Then
+		ValidForm.AdrIpDNS104.style.backgroundcolor = "red"
+		Sleep "1"
+		ValidForm.AdrIpDNS104.Value = ""
+		ValidForm.AdrIpDNS104.style.backgroundcolor = "Buttonface"
+	End If
+	If Len(ValidForm.AdrIpDNS104.Value) = 3 OR InStr(ValidForm.AdrIpDNS104.Value, ".") > 0 Then
+		ValidForm.AdrIpDNS104.Value=Replace(AdrIpDNS104.Value,".","")
+		ValidForm.AdrIpDNS201.Focus
+		ValidForm.AdrIpDNS201.Select
+	End If
+End Sub    
+ 
+Sub IPCheckAdrIpDNS201()
+	On Error Resume Next
+	If ValidForm.AdrIpDNS201.Value > 255 OR IsNumeric(ValidForm.AdrIpDNS201.Value) = False  Then
+		ValidForm.AdrIpDNS201.style.backgroundcolor = "red"
+		Sleep "1"
+		ValidForm.AdrIpDNS201.Value = ""
+		ValidForm.AdrIpDNS201.style.backgroundcolor = "Buttonface"
+	End If
+	If Len(ValidForm.AdrIpDNS201.Value) = 3 OR InStr(ValidForm.AdrIpDNS201.Value, ".") > 0 Then
+		ValidForm.AdrIpDNS201.Value=Replace(AdrIpDNS201.Value,".","")
+		ValidForm.AdrIpDNS202.Focus
+		ValidForm.AdrIpDNS202.Select
+	End If
+End Sub    
+ 
+Sub IPCheckAdrIpDNS202()
+	On Error Resume Next
+	If ValidForm.AdrIpDNS202.Value > 255 OR IsNumeric(ValidForm.AdrIpDNS202.Value) = False  Then
+		ValidForm.AdrIpDNS202.style.backgroundcolor = "red"
+		Sleep "1"
+		ValidForm.AdrIpDNS202.Value = ""
+		ValidForm.AdrIpDNS202.style.backgroundcolor = "Buttonface"
+	End If
+	If Len(ValidForm.AdrIpDNS202.Value) = 3 OR InStr(ValidForm.AdrIpDNS202.Value, ".") > 0 Then
+		ValidForm.AdrIpDNS202.Value=Replace(AdrIpDNS202.Value,".","")
+		ValidForm.AdrIpDNS203.Focus
+		ValidForm.AdrIpDNS203.Select
+	End If
+End Sub    
+ 
+Sub IPCheckAdrIpDNS203()
+	On Error Resume Next
+	If ValidForm.AdrIpDNS203.Value > 255 OR IsNumeric(ValidForm.AdrIpDNS203.Value) = False  Then
+		ValidForm.AdrIpDNS203.style.backgroundcolor = "red"
+		Sleep "1"
+		ValidForm.AdrIpDNS203.Value = ""
+		ValidForm.AdrIpDNS203.style.backgroundcolor = "Buttonface"
+	End If
+	If Len(ValidForm.AdrIpDNS203.Value) = 3 OR InStr(ValidForm.AdrIpDNS203.Value, ".") > 0 Then
+		ValidForm.AdrIpDNS203.Value=Replace(AdrIpDNS203.Value,".","")
+		ValidForm.AdrIpDNS204.Focus
+		ValidForm.AdrIpDNS204.Select
+	End If
+End Sub    
+ 
+Sub IPCheckAdrIpDNS204()
+	On Error Resume Next
+	If ValidForm.AdrIpDNS204.Value > 255 OR IsNumeric(ValidForm.AdrIpDNS204.Value) = False  Then
+		ValidForm.AdrIpDNS204.style.backgroundcolor = "red"
+		Sleep "1"
+		ValidForm.AdrIpDNS204.Value = ""
+		ValidForm.AdrIpDNS204.style.backgroundcolor = "Buttonface"
+	End If
+	If Len(ValidForm.AdrIpDNS204.Value) = 3 OR InStr(ValidForm.AdrIpDNS204.Value, ".") > 0 Then
+		ValidForm.AdrIpDNS204.Value=Replace(ValidForm.AdrIpDNS204.Value,".","")
+	End If
+End Sub    
+
+'###############################################################
+'###############################################################
+'Ces méthodes permettent de recopier la valeur de l'ip dans celle du DNS automatiquement
+
+sub AdrIpStation01_onchange()
+ValidForm.AdrRouStation01.value = ValidForm.AdrIpStation01.value
+End sub
+
+sub AdrIpStation02_onchange()
+ValidForm.AdrRouStation02.value = ValidForm.AdrIpStation02.value
+End sub
+
+sub AdrIpStation03_onchange()
+ValidForm.AdrRouStation03.value = ValidForm.AdrIpStation03.value
+End sub
+
+ 
+Sub Sleep(MSecs)
+	Set fso = CreateObject("Scripting.FileSystemObject")
+	Dim tempFolder : Set tempFolder = fso.GetSpecialFolder(2)
+	Dim tempName : tempName = "Sleeper.vbs"
+	If Fso.FileExists(tempFolder&"\"&tempName)=False Then
+		Set objOutputFile = fso.CreateTextFile(tempFolder&"\"&tempName, True)
+		objOutputFile.Write "wscript.sleep WScript.Arguments(0)"
+		objOutputFile.Close
+	End If
+	CreateObject("WScript.Shell").Run tempFolder&"\"&tempName &" "& MSecs,1,True
+End Sub
+</script>
+</body>
+</html>
