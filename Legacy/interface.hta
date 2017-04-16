@@ -1,6 +1,6 @@
 <html>
 <HTA:APPLICATION 
-ICON="laposte.ico"
+ICON="test.ico"
 SCROLL="no"
 SHOWINTASKBAR="yes"
 SINGLEINSTANCE="yes"
@@ -67,7 +67,7 @@ aside
 </table>
 <table border="2">
 <form name="ValidForm">
-<td>Intitulé IP:</td>
+<td>IntitulÃ© IP:</td>
 <td class="blue">
 <input maxlength="27" type='text'  class="IP" name="Intitule" size="27"></td><tr>
 
@@ -135,11 +135,11 @@ window.moveTo 510,200
 
 Set fso=CreateObject("Scripting.FileSystemObject")
 
-'Chemin du repertoire de C:\Users\Appdata\Roaming, Ce chemin est différents en fonction de chaques utilisateurs
+'Chemin du repertoire de C:\Users\Appdata\Roaming, Ce chemin est diffÃ©rents en fonction de chaques utilisateurs
 Dim sourcepath
 sourcepath = "C:"
 
-'Chemin du dossier param où sont ranger les configurations réseaux.
+'Chemin du dossier param oÃ¹ sont ranger les configurations rÃ©seaux.
 Dim PathFichParam
 
 If not fso.FolderExists(sourcepath & "\Data") Then
@@ -160,15 +160,15 @@ Sub Window_OnLoad
 	
 	Dim oFl, oF1d
 	Set oOption = Document.createElement("OPTION")
-	If fso.FolderExists(PathFichParam) Then									'Si le dossier existe, on l'ouvre, sinon, on le créé
+	If fso.FolderExists(PathFichParam) Then									'Si le dossier existe, on l'ouvre, sinon, on le crÃ©Ã©
 		For each oFl in  fso.GetFolder(PathFichParam).Files					'Pour tout les fichier dans le dossier param
-		Set prefIP=fso.OpenTextFile(PathFichParam&"\"& oFl.Name,ForReading) 'Ouvre tout les fichiers .ini contenu dans le répertoir param
+		Set prefIP=fso.OpenTextFile(PathFichParam&"\"& oFl.Name,ForReading) 'Ouvre tout les fichiers .ini contenu dans le rÃ©pertoir param
 		Do While prefIP.AtEndOfStream <> True								'Tant que le fichier contient encore quelque chose (des lignes)
 				Set oOption = Document.createElement("OPTION")
 				line = prefIP.ReadLine
 				chaine = LCase(left(line, Instr(line, "=")))
 				If (chaine = "intitule=") Then
-					oOption.Text = Mid(line, Instr(line, "=")+1)			'On ajoute son intitulé à la liste de l'interface graphique
+					oOption.Text = Mid(line, Instr(line, "=")+1)			'On ajoute son intitulÃ© Ã  la liste de l'interface graphique
 					oOption.Value = Mid(line, Instr(line, "=")+1)
 					ValidForm.listeIP.Add(oOption)
 				End if
@@ -191,51 +191,51 @@ Sub CenterWindow(x,y)
 End Sub
 
 Function Delete(PathFichParam)
-	'Cette fonction permet de supprimer une configuration réseau (Elle supprime ainsi le fichier .ini correspondant)
+	'Cette fonction permet de supprimer une configuration rÃ©seau (Elle supprime ainsi le fichier .ini correspondant)
 	Dim fichierEffacer, tamp
 	Const ForReading = 1, ForWriting = 2, ForAppending = 8
-	tamp = msgbox("Etes vous sûr de vouloir supprimer ces paramètres ?", vbExclamation+vbOKCancel, "Suppression d'une configuration")
+	tamp = msgbox("Etes vous sÃ»r de vouloir supprimer ces paramÃ¨tres ?", vbExclamation+vbOKCancel, "Suppression d'une configuration")
 	If (tamp=1) Then
-		If fso.FolderExists(PathFichParam) Then									'Si le dossier existe, on l'ouvre, sinon, on le créé
+		If fso.FolderExists(PathFichParam) Then									'Si le dossier existe, on l'ouvre, sinon, on le crÃ©Ã©
 			For each oF2 in  fso.GetFolder(PathFichParam).Files					'Pour chaque fichier dans le dossier
 			Set prefIP=fso.OpenTextFile(PathFichParam&"\"& oF2.Name,ForReading) 'Ouvre tout les fichiers .ini contenu dans le repertoir param
 			firstLine = prefIP.ReadLine
-						If (ValidForm.listeIP.Value = Mid(firstLine, Instr(firstLine, "=")+1)) Then		'Si l'intitulé du fichier correspond à l'intitulé selectionné dans la liste
-								fichierEffacer = PathFichParam&"\"& oF2.Name							'On le supprime grâce à DeleteFile
+						If (ValidForm.listeIP.Value = Mid(firstLine, Instr(firstLine, "=")+1)) Then		'Si l'intitulÃ© du fichier correspond Ã  l'intitulÃ© selectionnÃ© dans la liste
+								fichierEffacer = PathFichParam&"\"& oF2.Name							'On le supprime grÃ¢ce Ã  DeleteFile
 			prefIP.close
 								fso.DeleteFile fichierEffacer, True
 						End If
 			
 			Next
 		Else
-			Set oFld=fso.CreateFolder(sourcepath&"\param")						'On le créé si le dossier param n'existe pas
+			Set oFld=fso.CreateFolder(sourcepath&"\param")						'On le crÃ©Ã© si le dossier param n'existe pas
 		End If
 	Else
-		msgbox "Les paramètres n'ont pas été supprimés à vos sauvegardes", vbInformation+vbOKOnly, "Abandon de la suppression des paramètres"
+		msgbox "Les paramÃ¨tres n'ont pas Ã©tÃ© supprimÃ©s Ã  vos sauvegardes", vbInformation+vbOKOnly, "Abandon de la suppression des paramÃ¨tres"
 	End If
 	document.location.reload()
 End Function
 
 Function ModifConfig(PathFichParam)
-	'Cette fonction permet de modifier une configuration réseau (Elle supprime ainsi le fichier .ini correspondant)
+	'Cette fonction permet de modifier une configuration rÃ©seau (Elle supprime ainsi le fichier .ini correspondant)
 	Dim fichierUpdate, tamp
 	Const ForReading = 1, ForWriting = 2, ForAppending = 8
-	tamp = msgbox("Etes vous sûr de vouloir modifier ces paramètres ?", vbExclamation+vbOKCancel, "Suppression d'une configuration")
+	tamp = msgbox("Etes vous sÃ»r de vouloir modifier ces paramÃ¨tres ?", vbExclamation+vbOKCancel, "Suppression d'une configuration")
 	If (tamp=1) Then
-		If fso.FolderExists(PathFichParam) Then									'Si le dossier existe, on l'ouvre, sinon, on le créé
+		If fso.FolderExists(PathFichParam) Then									'Si le dossier existe, on l'ouvre, sinon, on le crÃ©Ã©
 			For each oF2 in  fso.GetFolder(PathFichParam).Files					'Pour chaque fichier dans le dossier
 			Set prefIP=fso.OpenTextFile(PathFichParam&"\"& oF2.Name,ForReading) 'Ouvre tout les fichiers .ini contenu dans le repertoir param
 			firstLine = prefIP.ReadLine
-						If (ValidForm.listeIP.Value = Mid(firstLine, Instr(firstLine, "=")+1)) Then		'Si l'intitulé du fichier correspond à l'intitulé selectionné dans la liste
-								fichierUpdate = PathFichParam&"\"& oF2.Name							'On le supprime grâce à DeleteFile
+						If (ValidForm.listeIP.Value = Mid(firstLine, Instr(firstLine, "=")+1)) Then		'Si l'intitulÃ© du fichier correspond Ã  l'intitulÃ© selectionnÃ© dans la liste
+								fichierUpdate = PathFichParam&"\"& oF2.Name							'On le supprime grÃ¢ce Ã  DeleteFile
 			prefIP.close
 								fso.DeleteFile fichierUpdate, True
 						End If
 			Next
-				'Création du fichier correspondant à l'intitulé
+				'CrÃ©ation du fichier correspondant Ã  l'intitulÃ©
 				fso.CreateTextFile PathFichParam&"\"&ValidForm.Intitule.value&".ini"
 				
-				'Ajout des paramètres de configurations réseau dans ce fichier
+				'Ajout des paramÃ¨tres de configurations rÃ©seau dans ce fichier
 				set fichierConf=fso.OpenTextFile(PathFichParam&"\"&ValidForm.Intitule.value&".ini", ForAppending)
 				fichierConf.WriteLine ("Intitule=") & ValidForm.Intitule.value
 				fichierConf.WriteLine ("IP=") & ValidForm.AdrIpStation01.value & "." & ValidForm.AdrIpStation02.value & "." & ValidForm.AdrIpStation03.value & "." & ValidForm.AdrIpStation04.value
@@ -245,37 +245,37 @@ Function ModifConfig(PathFichParam)
 				fichierConf.WriteLine ("DNS2=") & ValidForm.AdrIpDNS201.value & "." & ValidForm.AdrIpDNS202.value & "." & ValidForm.AdrIpDNS203.value & "." & ValidForm.AdrIpDNS204.value
 				fichierConf.close
 		Else
-			Set oFld=fso.CreateFolder(sourcepath&"\param")						'On le créé si le dossier param n'existe pas
+			Set oFld=fso.CreateFolder(sourcepath&"\param")						'On le crÃ©Ã© si le dossier param n'existe pas
 		End If
 	Else
-		msgbox "Les paramètres n'ont pas été supprimés à vos sauvegardes", vbInformation+vbOKOnly, "Abandon de la suppression des paramètres"
+		msgbox "Les paramÃ¨tres n'ont pas Ã©tÃ© supprimÃ©s Ã  vos sauvegardes", vbInformation+vbOKOnly, "Abandon de la suppression des paramÃ¨tres"
 	End If
 	Refresh (PathFichParam)
 End Function
 
 
 Sub AddIP()
-	'Cette fonction permet d'ajouter une configuration réseau, elle créé un fichier possedant tout les paramètres qu'a saisie l'utilisateur
+	'Cette fonction permet d'ajouter une configuration rÃ©seau, elle crÃ©Ã© un fichier possedant tout les paramÃ¨tres qu'a saisie l'utilisateur
 	Const ForReading = 1, ForWriting = 2, ForAppending = 8
 	Sleep "1"
 	Dim tamp
-	tamp = msgbox("Etes vous sûr de vouloir ajouter ces paramètres ?", vbExclamation+vbOKCancel, "Ajout d'une configuration")
+	tamp = msgbox("Etes vous sÃ»r de vouloir ajouter ces paramÃ¨tres ?", vbExclamation+vbOKCancel, "Ajout d'une configuration")
 	If (tamp=1) Then
 		If(ValidForm.Intitule.value="") Then
-			msgbox "Veuillez entrer un intitulé", vbExclamation+vbOKOnly, "Champs de saisie vide"
+			msgbox "Veuillez entrer un intitulÃ©", vbExclamation+vbOKOnly, "Champs de saisie vide"
 		Else
 			If not fso.FileExists(PathFichParam&"\"&ValidForm.Intitule.value&".ini") then
-			'Si le fichier correspondant à l'intitulé que nous avons ajouté à la liste n'existe pas, on le créé.
-				'Ouverture et mise à jour de la liste des IP + Ajout de l'intitulé
+			'Si le fichier correspondant Ã  l'intitulÃ© que nous avons ajoutÃ© Ã  la liste n'existe pas, on le crÃ©Ã©.
+				'Ouverture et mise Ã  jour de la liste des IP + Ajout de l'intitulÃ©
 				Set oOption = Document.createElement("OPTION")
 				oOption.Text = ValidForm.Intitule.value
 				oOption.Value = ValidForm.Intitule.value
 				ValidForm.listeIP.Add(oOption)
 				
-				'Création du fichier correspondant à l'intitulé
+				'CrÃ©ation du fichier correspondant Ã  l'intitulÃ©
 				fso.CreateTextFile PathFichParam&"\"&ValidForm.Intitule.value&".ini"
 				
-				'Ajout des paramètres de configurations réseau dans ce fichier
+				'Ajout des paramÃ¨tres de configurations rÃ©seau dans ce fichier
 				set fichierConf=fso.OpenTextFile(PathFichParam&"\"&ValidForm.Intitule.value&".ini", ForAppending)
 				fichierConf.WriteLine ("Intitule=") & ValidForm.Intitule.value
 				fichierConf.WriteLine ("IP=") & ValidForm.AdrIpStation01.value & "." & ValidForm.AdrIpStation02.value & "." & ValidForm.AdrIpStation03.value & "." & ValidForm.AdrIpStation04.value
@@ -285,28 +285,28 @@ Sub AddIP()
 				fichierConf.WriteLine ("DNS2=") & ValidForm.AdrIpDNS201.value & "." & ValidForm.AdrIpDNS202.value & "." & ValidForm.AdrIpDNS203.value & "." & ValidForm.AdrIpDNS204.value
 				fichierConf.close
 			Else
-				'Si le fichier existe déjà, on le notifie à l'utilisateur.
-				msgbox "Cet intitulé est déjà pris. Veuillez en choisir un autre."
+				'Si le fichier existe dÃ©jÃ , on le notifie Ã  l'utilisateur.
+				msgbox "Cet intitulÃ© est dÃ©jÃ  pris. Veuillez en choisir un autre."
 			End if
 		End If
 	Else
-		msgbox "Les paramètres n'ont pas été ajoutés à vos sauvegardes", vbInformation+vbOKOnly, "Abandon de l'ajout de configuration réseau"
+		msgbox "Les paramÃ¨tres n'ont pas Ã©tÃ© ajoutÃ©s Ã  vos sauvegardes", vbInformation+vbOKOnly, "Abandon de l'ajout de configuration rÃ©seau"
 		document.location.reload()
 	End if
 End Sub
 
 Function Refresh (PathFichParam)
-	'Cette fonction permet de récupérrer les configuration réseau inscrite dans un fichier, elle le lit, les récupère et les applique
+	'Cette fonction permet de rÃ©cupÃ©rrer les configuration rÃ©seau inscrite dans un fichier, elle le lit, les rÃ©cupÃ¨re et les applique
 	Dim AdrIp, Mask, Gateway, AdrDNS1, AdrDNS2, oF2
 	Const ForReading = 1, ForWriting = 2, ForAppending = 8
 		If fso.FolderExists(PathFichParam) Then
 			For each oF2 in  fso.GetFolder(PathFichParam).Files
-			Set prefIP=fso.OpenTextFile(PathFichParam&"\"& oF2.Name,ForReading) 'Ouvre tout les fichiers .ini contenu dans le répertoir param
+			Set prefIP=fso.OpenTextFile(PathFichParam&"\"& oF2.Name,ForReading) 'Ouvre tout les fichiers .ini contenu dans le rÃ©pertoir param
 							firstLine = prefIP.ReadLine
 							If (ValidForm.listeIP.Value = Mid(firstLine, Instr(firstLine, "=")+1)) Then
 								Do While prefIP.AtEndOfStream <> True
 									line = prefIP.ReadLine
-										'On met les configurations réseau dans les variables
+										'On met les configurations rÃ©seau dans les variables
 										ValidForm.Intitule.value = ValidForm.listeIP.Value
 										
 										If Ucase("IP") = Ucase(Split(line,"=",2,1)(0)) Then
@@ -356,20 +356,20 @@ Function Refresh (PathFichParam)
 End Function
 
 Function GetIPConfig (PathFichParam)
-	'Cette fonction permet de récupérrer les configuration réseau inscrite dans un fichier, elle le lit, les récupère et les applique
+	'Cette fonction permet de rÃ©cupÃ©rrer les configuration rÃ©seau inscrite dans un fichier, elle le lit, les rÃ©cupÃ¨re et les applique
 	Dim AdrIp, Mask, Gateway, AdrDNS1, AdrDNS2, oF2
 	Const ForReading = 1, ForWriting = 2, ForAppending = 8
 	Dim tamp
-	tamp = msgbox("Etes vous sûr de vouloir appliquer ces paramètres ?", vbExclamation+vbOKCancel, "Ajout d'une configuration")
+	tamp = msgbox("Etes vous sÃ»r de vouloir appliquer ces paramÃ¨tres ?", vbExclamation+vbOKCancel, "Ajout d'une configuration")
 	If (tamp=1) Then
 		If fso.FolderExists(PathFichParam) Then
 			For each oF2 in  fso.GetFolder(PathFichParam).Files
-			Set prefIP=fso.OpenTextFile(PathFichParam&"\"& oF2.Name,ForReading) 'Ouvre tout les fichiers .ini contenu dans le répertoir param
+			Set prefIP=fso.OpenTextFile(PathFichParam&"\"& oF2.Name,ForReading) 'Ouvre tout les fichiers .ini contenu dans le rÃ©pertoir param
 							firstLine = prefIP.ReadLine
 							If (ValidForm.listeIP.Value = Mid(firstLine, Instr(firstLine, "=")+1)) Then
 								Do While prefIP.AtEndOfStream <> True
 									line = prefIP.ReadLine
-										'On met les configurations réseau dans les variables
+										'On met les configurations rÃ©seau dans les variables
 										If Ucase("IP") = Ucase(Split(line,"=",2,1)(0)) Then
 											AdrIp = Ucase(Split(line,"=",2,1)(1))
 										End if
@@ -394,20 +394,20 @@ Function GetIPConfig (PathFichParam)
 			prefIP.Close
 			Next
 		End if
-			'On applique les nouvelles configuration réseau qu'on a lu dans le fichier
-			objShell.Run "netsh interface ip set address name=""Connexion au réseau local"" static " & AdrIP & " " & Mask & " " & Gateway & " " & 1, 0, True
-			objShell.Run "netsh interface ip set dns name=""Connexion au réseau local"" static "& AdrDNS1, 0, True
-			objShell.Run "netsh interface ip add dns name=""Connexion au réseau local"" addr="& AdrDNS2, 0, True	
-			MsgBox "Changement d'ip appliqué avec succès !" ,vbInformation+VBtittle
+			'On applique les nouvelles configuration rÃ©seau qu'on a lu dans le fichier
+			objShell.Run "netsh interface ip set address name=""Connexion au rÃ©seau local"" static " & AdrIP & " " & Mask & " " & Gateway & " " & 1, 0, True
+			objShell.Run "netsh interface ip set dns name=""Connexion au rÃ©seau local"" static "& AdrDNS1, 0, True
+			objShell.Run "netsh interface ip add dns name=""Connexion au rÃ©seau local"" addr="& AdrDNS2, 0, True	
+			MsgBox "Changement d'ip appliquÃ© avec succÃ¨s !" ,vbInformation+VBtittle
 	Else
-		msgbox "Les paramètres n'ont pas étés appliqués", vbInformation+vbOKOnly, "Abandon de de l'application des paramètres réseaux"
+		msgbox "Les paramÃ¨tres n'ont pas Ã©tÃ©s appliquÃ©s", vbInformation+vbOKOnly, "Abandon de de l'application des paramÃ¨tres rÃ©seaux"
 	End If
 End Function
 
 
 
 Sub Valider()
-	'Cette fonction permet d'appliquer une configuration réseau directement saisie par l'utilisateur lorsqu'il clique sur valider.
+	'Cette fonction permet d'appliquer une configuration rÃ©seau directement saisie par l'utilisateur lorsqu'il clique sur valider.
 	Dim Ips
 	Dim Mask
 	Dim Gateways
@@ -415,7 +415,7 @@ Sub Valider()
 	Dim DNS2
 	Dim tamp
 	
-	tamp = msgbox("Etes vous sûr de vouloir appliquer ces paramètres ?", vbExclamation+vbOKCancel, "Ajout d'une configuration")
+	tamp = msgbox("Etes vous sÃ»r de vouloir appliquer ces paramÃ¨tres ?", vbExclamation+vbOKCancel, "Ajout d'une configuration")
 	If (tamp=1) Then
 		Ips = ValidForm.AdrIpStation01.value & "." & ValidForm.AdrIpStation02.value & "." & ValidForm.AdrIpStation03.value & "." & ValidForm.AdrIpStation04.value
 		Mask = ValidForm.AdrSmStation01.value & "." & ValidForm.AdrSmStation02.value & "." & ValidForm.AdrSmStation03.value & "." & ValidForm.AdrSmStation04.value
@@ -423,39 +423,39 @@ Sub Valider()
 		DNS1 = ValidForm.AdrIpDNS101.value & "." & ValidForm.AdrIpDNS102.value & "." & ValidForm.AdrIpDNS103.value & "." & ValidForm.AdrIpDNS104.value
 		DNS2 = ValidForm.AdrIpDNS201.value & "." & ValidForm.AdrIpDNS202.value & "." & ValidForm.AdrIpDNS203.value & "." & ValidForm.AdrIpDNS204.value
 	 
-		objShell.Run "netsh interface ip set address name=""Connexion au réseau local"" static " & Ips & " " & Mask & " " & Gateways & " " & 1, 0, True
-		objShell.Run "netsh interface ip set dns name=""Connexion au réseau local"" static "& DNS1, 0, True
-		objShell.Run "netsh interface ip add dns name=""Connexion au réseau local"" addr="& DNS2, 0, True	
-		MsgBox "Changement d'ip appliqué avec succès !" ,vbInformation+VBtittle
+		objShell.Run "netsh interface ip set address name=""Connexion au rÃ©seau local"" static " & Ips & " " & Mask & " " & Gateways & " " & 1, 0, True
+		objShell.Run "netsh interface ip set dns name=""Connexion au rÃ©seau local"" static "& DNS1, 0, True
+		objShell.Run "netsh interface ip add dns name=""Connexion au rÃ©seau local"" addr="& DNS2, 0, True	
+		MsgBox "Changement d'ip appliquÃ© avec succÃ¨s !" ,vbInformation+VBtittle
 	Else
-		MsgBox "Les paramètres n'ont pas étés appliqués", vbInformation+vbOKOnly, "Abandon de l'application des paramètres réseaux"
+		MsgBox "Les paramÃ¨tres n'ont pas Ã©tÃ©s appliquÃ©s", vbInformation+vbOKOnly, "Abandon de l'application des paramÃ¨tres rÃ©seaux"
 	End If
   
 End Sub
  
 Sub Annuler()
-	'Cette fonction permet d'appliquer un DHCP à l'adresse IP ainsi qu'aux DNS
+	'Cette fonction permet d'appliquer un DHCP Ã  l'adresse IP ainsi qu'aux DNS
 	Dim tamp
-	tamp = msgbox("Etes vous sûr de vouloir appliquer les paramètres par défaut et restaurer le DHCP ?", vbExclamation+vbOKCancel, "Ajout d'une configuration")
+	tamp = msgbox("Etes vous sÃ»r de vouloir appliquer les paramÃ¨tres par dÃ©faut et restaurer le DHCP ?", vbExclamation+vbOKCancel, "Ajout d'une configuration")
 	If (tamp=1) Then
-		'L'utilisateur clique sur annuler et l'on restaure un DHCP pour configurer les paramères résaux par défauts.
-		MsgBox "Abandon du changement de l'adresse IP et application des paramètres par défauts",vbInformation+VBtittle,"Assistant Création collection"
-		objShell.Run "netsh interface IPv4 set address name=""Connexion au réseau local"" DHCP", 0, True
-		objShell.Run "netsh interface ip set wins ""Connexion au réseau local"" DHCP", 0, True
-		objShell.Run "netsh interface ip set dns ""Connexion au réseau local"" DHCP", 0, True
+		'L'utilisateur clique sur annuler et l'on restaure un DHCP pour configurer les paramÃ¨res rÃ©saux par dÃ©fauts.
+		MsgBox "Abandon du changement de l'adresse IP et application des paramÃ¨tres par dÃ©fauts",vbInformation+VBtittle,"Assistant CrÃ©ation collection"
+		objShell.Run "netsh interface IPv4 set address name=""Connexion au rÃ©seau local"" DHCP", 0, True
+		objShell.Run "netsh interface ip set wins ""Connexion au rÃ©seau local"" DHCP", 0, True
+		objShell.Run "netsh interface ip set dns ""Connexion au rÃ©seau local"" DHCP", 0, True
 	Else
-		MsgBox "Les paramètres par défauts n'ont pas étés appliqués", vbInformation+vbOKOnly, "Abandon de l'application des paramètres par défauts"
+		MsgBox "Les paramÃ¨tres par dÃ©fauts n'ont pas Ã©tÃ©s appliquÃ©s", vbInformation+vbOKOnly, "Abandon de l'application des paramÃ¨tres par dÃ©fauts"
 	End If
 End Sub
 
 Sub Aide()
-MsgBox "Bienvenue dans le menu contextuel de l'aide du logiciel ChangeIP, afin de modifier sa configuration réseau, l'utilisateur doit être administrateur ou membre du croupe Opérateur de Configuration Réseau. On peut se servir de la MMC ou de l'outil fourni avec Change IP : ADMIN RESEAU"&Chr(10)&"L'utilisateur doit entrer dans les champs de saisie les paramètres de sa futur configuration, celle ci peut être appliquée directement ou peut être sauvegardé dans la liste"&Chr(10)&Chr(10)&"-	Le bouton « Apply » permet d’appliquer une nouvelle configuration réseau au préalablement saisie par l’utilisateur ou sélectionné dans la liste des configuration sauvegardées"&Chr(10)&Chr(10)&"-	Le bouton « Restore DHCP » applique un DHCP à l’IP ainsi qu’aux DNS"&Chr(10)&Chr(10)&"-	Le bouton « Add » permet de sauvegarder la configuration réseau au préalablement saisie par l’utilisateur"&Chr(10)&Chr(10)&"-	Le bouton « Delete » permet de supprimer une sauvegarde au préalablement sélectionné dans la liste"&Chr(10)&Chr(10)&"-	Le bouton « Update » permet modifier une configuration réseau existante"&Chr(10)&Chr(10), vbInformation+vbOKOnly, "Aide"
+MsgBox "Bienvenue dans le menu contextuel de l'aide du logiciel ChangeIP, afin de modifier sa configuration rÃ©seau, l'utilisateur doit Ãªtre administrateur ou membre du croupe OpÃ©rateur de Configuration RÃ©seau. On peut se servir de la MMC ou de l'outil fourni avec Change IP : ADMIN RESEAU"&Chr(10)&"L'utilisateur doit entrer dans les champs de saisie les paramÃ¨tres de sa futur configuration, celle ci peut Ãªtre appliquÃ©e directement ou peut Ãªtre sauvegardÃ© dans la liste"&Chr(10)&Chr(10)&"-	Le bouton Â« Apply Â» permet dÂ’appliquer une nouvelle configuration rÃ©seau au prÃ©alablement saisie par lÂ’utilisateur ou sÃ©lectionnÃ© dans la liste des configuration sauvegardÃ©es"&Chr(10)&Chr(10)&"-	Le bouton Â« Restore DHCP Â» applique un DHCP Ã  lÂ’IP ainsi quÂ’aux DNS"&Chr(10)&Chr(10)&"-	Le bouton Â« Add Â» permet de sauvegarder la configuration rÃ©seau au prÃ©alablement saisie par lÂ’utilisateur"&Chr(10)&Chr(10)&"-	Le bouton Â« Delete Â» permet de supprimer une sauvegarde au prÃ©alablement sÃ©lectionnÃ© dans la liste"&Chr(10)&Chr(10)&"-	Le bouton Â« Update Â» permet modifier une configuration rÃ©seau existante"&Chr(10)&Chr(10), vbInformation+vbOKOnly, "Aide"
 End Sub
 
 '############################
 '############################
-'Ces fonctions permettent le contrôle de saisie de l'utilisateur, il doit uniquement rentrer des chiffres
-'Ces chiffres doivent être compris entre 0 et 255
+'Ces fonctions permettent le contrÃ´le de saisie de l'utilisateur, il doit uniquement rentrer des chiffres
+'Ces chiffres doivent Ãªtre compris entre 0 et 255
  
 Sub IPCheckAdrIpStation01()
 	On Error Resume Next
@@ -758,7 +758,7 @@ End Sub
 
 '###############################################################
 '###############################################################
-'Ces méthodes permettent de recopier la valeur de l'ip dans celle du DNS automatiquement
+'Ces mÃ©thodes permettent de recopier la valeur de l'ip dans celle du DNS automatiquement
 
 sub AdrIpStation01_onchange()
 ValidForm.AdrRouStation01.value = ValidForm.AdrIpStation01.value
