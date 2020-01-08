@@ -2,7 +2,7 @@
 
 ### Description
 
-It's a little interface based on VBScript who allows user to configure their network.
+It's an interface based on VBScript who allows user to configure their network.
 Here a list of the param you can update or set : 
 
 - IP
